@@ -1,8 +1,10 @@
 <?php
+declare (strict_types = 1);
+
 namespace App\Exception;
 
 use App\Helpers\App;
-use Throwable;
+use Throwable, ErrorException;
 
 class ExceptionHanlder
 {
@@ -16,5 +18,10 @@ class ExceptionHanlder
          echo "This should no have happened, please try again";
       }
       exit;
+   }
+
+   public function convertWarningsAndNoticesToException($severity, $message, $file, $line)
+   {
+      throw new ErrorException($message, $severity, $severity, $file, $line);
    }
 }

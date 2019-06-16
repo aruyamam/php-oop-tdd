@@ -2,12 +2,14 @@
 declare (strict_types = 1);
 
 use App\Helpers\App;
-use App\Exception\ExceptionHanlder;
 use App\Helpers\Config;
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-set_exception_handler([new ExceptionHanlder(), 'handle']);
+require_once __DIR__ . '/src/exception/exception.php';
+
+$db = new mysqli('kdafjdlf', 'root', '', 'bug');
+exit;
 
 $config = Config::getFileContent('dklsfj');
 var_dump($config);
