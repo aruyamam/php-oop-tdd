@@ -1,8 +1,6 @@
 <?php
 declare (strict_types = 1);
 
-use App\Helpers\App;
-use App\Helpers\Config;
 use App\Logger\Logger;
 use App\Logger\LogLevel;
 
