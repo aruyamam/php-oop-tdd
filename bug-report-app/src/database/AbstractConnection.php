@@ -28,4 +28,6 @@ abstract class AbstractConnection
       $matches = array_intersect_key(static::REQUIRED_CONNECTION_KEYS, array_keys($credentials));
       return count($matches) === count(static::REQUIRED_CONNECTION_KEYS);
    }
+
+   abstract protected function parseCredentials(array $crendentials): array;
 }
