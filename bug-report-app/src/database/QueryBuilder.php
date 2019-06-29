@@ -1,8 +1,9 @@
 <?php
+
 namespace App\Database;
 
 use App\Contracts\DatabaseConnectionInterface;
-use App\Exception\NotFoundException;
+use App\Exception\InvalidArgumentException;
 
 abstract class QueryBuilder
 {
@@ -42,7 +43,7 @@ abstract class QueryBuilder
             $value = $operator;
             $operator = self::OPERATORS[0];
          } else {
-            throw new NotFoundException('Operator is not valid', ['operator' => $operator]);
+            throw new InvalidArgumentException('Operator is not valid', ['operator' => $operator]);
          }
       }
       $this->parseWhere([$column => $value], $operator);
@@ -68,7 +69,17 @@ abstract class QueryBuilder
    }
 
    public function create(array $data)
-   { }
+   {
+      $this->fields = '`' . implode('`, `', array_keys($data)) . '`';
+      foreach ($data as $value) {
+         $this->placeholders[] = self::PLACEHOLDER;
+         $this->bindings[] = $value;
+      }
+      $query = $this->prepare($this->getQuery(self::DML_TYPE_INSERT));
+      $this->statement = $this->execute($query);
+
+      return $this->lastInsertedId();
+   }
 
    public function update(array $data)
    { }
@@ -77,16 +88,26 @@ abstract class QueryBuilder
    { }
 
    public function raw($query)
-   { }
+   {
+      $query = $this->prepare($query);
+      $this->statement = $this->execute($query);
+      return $this;
+   }
 
    public function find($id)
-   { }
+   {
+      return $this->where('id', $id)->first();
+   }
 
    public function findOneBy(string $field, $value)
-   { }
+   {
+      return $this->where($field, $value)->first();
+   }
 
    public function first()
-   { }
+   {
+      return $this->count() ? $this->get()[0] : '';
+   }
 
    abstract public function get();
    abstract public function count();
