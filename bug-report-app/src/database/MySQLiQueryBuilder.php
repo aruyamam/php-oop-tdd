@@ -16,9 +16,13 @@ class MySQLiQueryBuilder extends QueryBuilder
 
    public function get()
    {
+      $results = [];
       if (!$this->resultSet) {
          $this->resultSet = $this->statement->get_result();
-         $this->results = $this->resultSet->fetch_all(MYSQLI_ASSOC);
+         while ($object = $this->resultSet->fetch_object()) {
+            $results[] = $object;
+         }
+         $this->results = $results;
       }
       return $this->results;
    }
@@ -49,7 +53,7 @@ class MySQLiQueryBuilder extends QueryBuilder
 
       if ($this->bindings) {
          $bindings = $this->parseBindings($this->bindings);
-         $reflectionObj = new ReflectionClass('msyqli_stmt');
+         $reflectionObj = new ReflectionClass('mysqli_stmt');
          $method = $reflectionObj->getMethod('bind_param');
          $method->invokeArgs($statement, $bindings);
       }
