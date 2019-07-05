@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Database;
 
 trait Query
@@ -26,7 +27,7 @@ trait Query
 
          case self::DML_TYPE_UPDATE:
             return sprintf(
-               "UPDATE %s SET %s WHERE (%s)",
+               "UPDATE %s SET %s WHERE %s",
                $this->table,
                implode(', ', $this->fields),
                implode(' AND ', $this->placeholders)
@@ -35,7 +36,7 @@ trait Query
 
          case self::DML_TYPE_DELETE:
             return sprintf(
-               "DELETE FROM %s WHERE (%s)",
+               "DELETE FROM %s WHERE %s",
                $this->table,
                implode(' AND ', $this->placeholders)
             );
