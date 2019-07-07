@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Database;
 
 use PDO;
@@ -36,5 +37,15 @@ class PDOQueryBuilder extends QueryBuilder
    public function fetchInto($className)
    {
       return $this->statement->fetchAll(PDO::FETCH_CLASS, $className);
+   }
+
+   public function beginTransaction()
+   {
+      $this->connection->beginTransaction();
+   }
+
+   public function affected()
+   {
+      return $this->count();
    }
 }
