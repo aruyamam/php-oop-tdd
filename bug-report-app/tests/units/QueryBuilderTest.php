@@ -113,7 +113,7 @@ class QueryBuilderTest extends TestCase
       $data = [
          'report_type' => 'Report Type 1',
          'message' => 'This is a dummy message',
-         'email' => 'support[devscreencast',
+         'email' => 'support@devscreencast',
          'link' => 'https://link.com',
          'created_at' => date('Y-m-d H:i:s')
       ];
