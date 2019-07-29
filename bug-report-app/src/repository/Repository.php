@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Contracts\RepositoryInterface;
+use App\Database\QueryBuilder;
+use App\Entity\Entity;
 
 abstract class Repository implements RepositoryInterface
 {
@@ -31,16 +33,16 @@ abstract class Repository implements RepositoryInterface
       return ($result) ? $result[0] : null;
    }
 
-   public function findBy(string $criteria)
+   public function findBy(array $criteria)
    {
-      $this->queryBuilder->table(static::$className);
+      $this->queryBuilder->table(static::$table);
       foreach ($criteria as $criterion) {
          $this->queryBuilder->where(...$criterion);
       }
       return $this->queryBuilder->runQuery()->fetchInto(static::$className);
    }
 
-   public function findAll(int $id): array
+   public function findAll(int $id)
    {
       return $this->queryBuilder
          ->table(static::$table)
@@ -60,7 +62,7 @@ abstract class Repository implements RepositoryInterface
       return $this->find($id);
    }
 
-   public function update(Entity $entity, array $conditions): object
+   public function update(Entity $entity, array $conditions = []): object
    {
       $this->queryBuilder->table(static::$table)->update($entity->toArray());
       foreach ($conditions as $condition) {
@@ -70,7 +72,7 @@ abstract class Repository implements RepositoryInterface
       return $this->find($entity->getId());
    }
 
-   public function delete(Entity $entity, array $conditions): void
+   public function delete(Entity $entity, array $conditions = []): void
    {
       $this->queryBuilder->table(static::$table)->delete($entity->toArray());
       foreach ($conditions as $condition) {
