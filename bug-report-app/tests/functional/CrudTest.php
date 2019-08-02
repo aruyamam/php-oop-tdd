@@ -41,6 +41,42 @@ class CrudTest extends TestCase
       return $bugReport;
    }
 
+   /** @depends testItCanCreateReportUsingPostRequest */
+   public function testItCanUpdateReportUsingPostRequest(BugReport $bugReport)
+   {
+      $postData = $this->getPostData([
+         'update' => true,
+         'message' => 'The video on PHP OOP has issuess, please check and fix it',
+         'link' => 'https//updated.com',
+         'reportId' => $bugReport->getId()
+      ]);
+      $this->client->post("http://localhost/bug-report-app/src/update.php", $postData);
+
+      $result = $this->reporsitory->find($bugReport->getId());
+
+      self::assertInstanceOf(BugReport::class, $result);
+      self::assertSame(
+         'The video on PHP OOP has issuess, please check and fix it',
+         $bugReport->getMessage()
+      );
+      self::assertSame('https//updated.com', $bugReport->getLink());
+
+      return $bugReport;
+   }
+
+   /** @depends testItCanUpdateReportUsingPostRequest */
+   public function testItCanDeleteReportUsingPostRequest(BugReport $bugReport)
+   {
+      $postData = [
+         'delete' => true,
+         'reportId' => $bugReport->getId()
+      ];
+      $this->client->post("http://localhost/bug-report-app/src/delete.php", $postData);
+
+      $result = $this->reporsitory->find($bugReport->getId());
+      self::assertNull($bugReport);
+   }
+
    private function getPostData(array $option = []): array
    {
       return array_merge([
