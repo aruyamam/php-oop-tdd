@@ -6,6 +6,7 @@ use PHPUnit\Framework\TestCase;
 use App\Repository\BugReportRepository;
 use App\Helpers\DbQueryBuilderFactory;
 use App\Entity\BugReport;
+use App\Helpers\HttpClient;
 
 class CrudTest extends TestCase
 {
@@ -24,7 +25,9 @@ class CrudTest extends TestCase
    public function testItCanCreateReportUsingPostRequest()
    {
       $postData = $this->getPostData(['add' => true]);
-      $this->client->post("http://localhost/bug-report-app/src/add.php", $postData);
+      $response = $this->client->post("http://localhost:8080/src/add.php", $postData);
+      $response = json_decode($response, true);
+      self::assertEquals(200, $response['statusCode']);
 
       $result = $this->reporsitory->findBy([
          ['report_type', '=', 'Audio'],
@@ -50,7 +53,9 @@ class CrudTest extends TestCase
          'link' => 'https//updated.com',
          'reportId' => $bugReport->getId()
       ]);
-      $this->client->post("http://localhost/bug-report-app/src/update.php", $postData);
+      $response = $this->client->post("http://localhost/bug-report-app/src/update.php", $postData);
+      $response = json_decode($response, true);
+      self::assertEquals(200, $response['statusCode']);
 
       $result = $this->reporsitory->find($bugReport->getId());
 
@@ -71,7 +76,9 @@ class CrudTest extends TestCase
          'delete' => true,
          'reportId' => $bugReport->getId()
       ];
-      $this->client->post("http://localhost/bug-report-app/src/delete.php", $postData);
+      $response = $this->client->post("http://localhost/bug-report-app/src/delete.php", $postData);
+      $response = json_decode($response, true);
+      self::assertEquals(200, $response['statusCode']);
 
       $result = $this->reporsitory->find($bugReport->getId());
       self::assertNull($bugReport);
