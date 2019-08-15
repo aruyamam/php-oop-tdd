@@ -29,7 +29,7 @@ class CrudTest extends TestCase
       $response = json_decode($response, true);
       self::assertEquals(200, $response['statusCode']);
 
-      $result = $this->reporsitory->findBy([
+      $result = $this->repository->findBy([
          ['report_type', '=', 'Audio'],
          ['link', '=', 'https//example.com'],
          ['email', '=', 'test@example.com'],

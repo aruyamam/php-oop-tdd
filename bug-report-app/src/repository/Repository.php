@@ -35,14 +35,14 @@ abstract class Repository implements RepositoryInterface
 
    public function findBy(array $criteria)
    {
-      $this->queryBuilder->table(static::$table);
+      $this->queryBuilder->table(static::$table)->select();
       foreach ($criteria as $criterion) {
          $this->queryBuilder->where(...$criterion);
       }
       return $this->queryBuilder->runQuery()->fetchInto(static::$className);
    }
 
-   public function findAll(int $id)
+   public function findAll()
    {
       return $this->queryBuilder
          ->table(static::$table)
