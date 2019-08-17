@@ -16,7 +16,7 @@ class CrudTest extends TestCase
 
    public function setUp()
    {
-      $this->queryBuilder = DbQueryBuilderFactory::make('database', 'pdo', ['db_name' => 'bug_app_testing']);
+      $this->queryBuilder = DbQueryBuilderFactory::make();
       $this->repository = new BugReportRepository($this->queryBuilder);
       $this->client = new HttpClient();
       parent::setUp();

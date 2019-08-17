@@ -6,6 +6,7 @@ require_once __DIR__ . '/../vendor/autoload.php';
 
 use App\Entity\BugReport;
 use App\Exception\BadRequestException;
+use App\Helpers\App;
 use App\Repository\BugReportRepository;
 use App\Helpers\DbQueryBuilderFactory;
 use App\Logger\Logger;
@@ -24,6 +25,7 @@ if (isset($_POST, $_POST['add'])) {
 
    $logger = new Logger();
    try {
+      $application = new App();
       $queryBuilder = DbQueryBuilderFactory::make();
       $repository = new BugReportRepository($queryBuilder);
       $newReport = $repository->create($bugReport);
@@ -39,5 +41,5 @@ if (isset($_POST, $_POST['add'])) {
          'type' => $newReport->getReportType()
       ]
    );
-   $bugReports = $repository->findAll();
+   // $bugReports = $repository->findAll();
 }
