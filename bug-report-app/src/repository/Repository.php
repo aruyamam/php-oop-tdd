@@ -45,9 +45,7 @@ abstract class Repository implements RepositoryInterface
    public function findAll()
    {
       return $this->queryBuilder
-         ->table(static::$table)
-         ->select()
-         ->runQuery()
+         ->raw("SELECT * FROM reports")
          ->fetchInto(static::$className);
    }
 

@@ -53,20 +53,20 @@ class CrudTest extends TestCase
          'link' => 'https//updated.com',
          'reportId' => $bugReport->getId()
       ]);
-      $response = $this->client->post("http://localhost/bug-report-app/src/update.php", $postData);
+      $response = $this->client->post("http://localhost:8080/src/update.php", $postData);
       $response = json_decode($response, true);
       self::assertEquals(200, $response['statusCode']);
 
-      $result = $this->reporsitory->find($bugReport->getId());
+      $result = $this->repository->find($bugReport->getId());
 
       self::assertInstanceOf(BugReport::class, $result);
       self::assertSame(
          'The video on PHP OOP has issuess, please check and fix it',
-         $bugReport->getMessage()
+         $result->getMessage()
       );
-      self::assertSame('https//updated.com', $bugReport->getLink());
+      self::assertSame('https//updated.com', $result->getLink());
 
-      return $bugReport;
+      return $result;
    }
 
    /** @depends testItCanUpdateReportUsingPostRequest */
@@ -76,12 +76,12 @@ class CrudTest extends TestCase
          'delete' => true,
          'reportId' => $bugReport->getId()
       ];
-      $response = $this->client->post("http://localhost/bug-report-app/src/delete.php", $postData);
+      $response = $this->client->post("http://localhost:8080/src/delete.php", $postData);
       $response = json_decode($response, true);
       self::assertEquals(200, $response['statusCode']);
 
-      $result = $this->reporsitory->find($bugReport->getId());
-      self::assertNull($bugReport);
+      $result = $this->repository->find($bugReport->getId());
+      self::assertNull($result);
    }
 
    private function getPostData(array $option = []): array
