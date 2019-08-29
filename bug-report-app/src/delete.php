@@ -31,5 +31,5 @@ if (isset($_POST, $_POST['delete'])) {
          'type' => $bugReport->getReportType()
       ]
    );
-   // $bugReports = $repository->findAll();
+   $bugReports = $repository->findAll();
 }

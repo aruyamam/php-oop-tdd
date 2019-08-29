@@ -39,5 +39,5 @@ if (isset($_POST, $_POST['update'])) {
          'type' => $newReport->getReportType()
       ]
    );
-   // $bugReports = $repository->findAll();
+   $bugReports = $repository->findAll();
 }

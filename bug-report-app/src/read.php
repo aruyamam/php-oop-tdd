@@ -6,6 +6,6 @@ use App\Helpers\DbQueryBuilderFactory;
 use App\Repository\BugReportRepository;
 
 $queryBuilder = DbQueryBuilderFactory::make();
-$repository = new BugReportRepository();
+$repository = new BugReportRepository($queryBuilder);
 
-$bugReport = $repository->findAll();
+$bugReports = $repository->findAll();
